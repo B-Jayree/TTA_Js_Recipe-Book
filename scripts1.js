@@ -34,6 +34,8 @@ const displayRecipes = () => {
      <h2 class="text-lg font-bold">${recipe.title}</h2>
      <p class="text-sm text-gray-500"><strong>Ingredients: &emsp;</strong>${recipe.Ingredients}</p>
      <p class="text-sm"><strong>Steps:&emsp;</strong>${recipe.Steps}</p>
+     <button class="bg-blue-500 text-white px-2 py-1 rounded mt-2">Edit</button>
+      <button class="bg-red-500 text-white px-2 py-1 rounded mt-2">Delete</button>
 `;
         recipeList.appendChild(recipeCard);
     })
@@ -41,13 +43,19 @@ const displayRecipes = () => {
 
 const addRecipe = (event) => {
     event.preventDefault();
-    const recipeTittle = document.querySelector('#recipeTitle').value;
-    const recipeIngredients = document.querySelector('#recipeIngredients').value;
-    const recipeSteps = document.querySelector('#recipeSteps').value;
+    const recipeTitle = document.querySelector('#recipeTitle').value.trim();
+    const recipeIngredients = document.querySelector('#recipeIngredients').value.trim();
+    const recipeSteps = document.querySelector('#recipeSteps').value.trim();
 
-    if (recipeTittle.trim() !== "" && recipeIngredients.trim() !== "" && recipeSteps.trim() !== "") {
-        const newRecipe = {
-            title : recipeTittle,
+    if (recipeTitle !== "" && recipeIngredients !== "" && recipeSteps !== "") {
+
+        const isDuplicate = recipes.some((recipe) => recipe.title.toLocaleLowerCase() ===  recipeTitle.toLocaleLowerCase());
+        if (isDuplicate){
+            alert("Recipe Already exists");
+        } 
+        else{
+            const newRecipe = {
+            title : recipeTitle,
             Ingredients : recipeIngredients,
             Steps : recipeSteps
         }
@@ -58,11 +66,14 @@ const addRecipe = (event) => {
         document.getElementById("recipeSteps").value = "";
 
         displayRecipes();
+    }
     } else {
         alert('Please fill out all fields');
     }
 }
-const recipeForm = document.querySelector('#recipeForm');
-recipeForm.addEventListener('submit', addRecipe);
+// const recipeForm = document.querySelector('#recipeForm');
+// recipeForm.addEventListener('submit', addRecipe);
+
+document.getElementById('recipeForm').addEventListener('submit', addRecipe);
 
 displayRecipes();
