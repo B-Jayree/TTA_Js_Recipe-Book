@@ -41,24 +41,56 @@ const displayRecipes = () => {
     })
 }
 
+const showError =(elementId, message)=>{
+    const errorElement = document.getElementById(elementId);
+    errorElement.innerText = message;
+    errorElement.classList.remove("hidden");
+}
+
+const hideError = (elementId) => {
+    const errorElement = document.getElementById(elementId);
+    errorElement.classList.add("hidden"); 
+}
+
 const addRecipe = (event) => {
     event.preventDefault();
     const recipeTitle = document.querySelector('#recipeTitle').value.trim();
     const recipeIngredients = document.querySelector('#recipeIngredients').value.trim();
     const recipeSteps = document.querySelector('#recipeSteps').value.trim();
 
-    if (recipeTitle !== "" && recipeIngredients !== "" && recipeSteps !== "") {
+    // if (recipeTitle !== "" && recipeIngredients !== "" && recipeSteps !== "") {
 
+        hideError("titleError");
+        hideError("ingredientsError");
+        hideError("stepsError");
+
+
+        let isValid = true;
+
+        if (recipeTitle === ""){
+            showError("titleError", "Please enter the recipe title");
+            isValid = false;
+        }
+        if (recipeIngredients === ""){
+            showError("ingredientsError", "Please enter the recipe title");
+            isValid = false;
+        }
+        if (recipeSteps === ""){
+            showError("stepsError", "Please enter the recipe title");
+            isValid = false;
+        }
+
+        if (isValid){
         const isDuplicate = recipes.some((recipe) => recipe.title.toLocaleLowerCase() ===  recipeTitle.toLocaleLowerCase());
+        
         if (isDuplicate){
             alert("Recipe Already exists");
-        } 
-        else{
+        }else{
             const newRecipe = {
-            title : recipeTitle,
-            Ingredients : recipeIngredients,
-            Steps : recipeSteps
-        }
+            title: recipeTitle,
+            Ingredients: recipeIngredients,
+            Steps: recipeSteps
+            }
         recipes.push(newRecipe);
 
         document.getElementById("recipeTitle").value = "";
@@ -66,10 +98,13 @@ const addRecipe = (event) => {
         document.getElementById("recipeSteps").value = "";
 
         displayRecipes();
-    }
-    } else {
-        alert('Please fill out all fields');
-    }
+        }
+        }
+           
+
+    // } else {
+    //     alert('Please fill out all fields');
+    // }
 }
 // const recipeForm = document.querySelector('#recipeForm');
 // recipeForm.addEventListener('submit', addRecipe);
