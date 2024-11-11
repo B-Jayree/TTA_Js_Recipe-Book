@@ -23,10 +23,10 @@ let recipes = [
  * This function displays the list of recipes on the webpage.
  */
 const displayRecipes = () => {
-    const recipeList = document.querySelector('#recipeList');
+    const recipeList = document.getElementById('recipeList');
     recipeList.innerHTML = "";
 
-    recipes.forEach((recipe) => {
+    recipes.forEach((recipe, index) => {
         const recipeCard = document.createElement('div');
         recipeCard.classList.add('bg-white', 'p-4', 'rounded', 'shadow', 'mb-4');
 
@@ -34,8 +34,8 @@ const displayRecipes = () => {
      <h2 class="text-lg font-bold">${recipe.title}</h2>
      <p class="text-sm text-gray-500"><strong>Ingredients: &emsp;</strong>${recipe.Ingredients}</p>
      <p class="text-sm"><strong>Steps:&emsp;</strong>${recipe.Steps}</p>
-     <button class="bg-blue-500 text-white px-2 py-1 rounded mt-2">Edit</button>
-      <button class="bg-red-500 text-white px-2 py-1 rounded mt-2">Delete</button>
+     <button class="bg-blue-500 text-white px-2 py-1 rounded mt-2" onclick="editRecipe(${index})">Edit</button>
+      <button class="bg-red-500 text-white px-2 py-1 rounded mt-2" onclick="deleteRecipe(${index})">Delete</button>
 `;
         recipeList.appendChild(recipeCard);
     })
@@ -71,8 +71,6 @@ const addRecipe = (event) => {
 
 
     
-
-    // if (recipeTitle !== "" && recipeIngredients !== "" && recipeSteps !== "") {
      hideError("titleError");
      hideError("IngredientsError");
      hideError("stepsError");
@@ -111,12 +109,31 @@ const addRecipe = (event) => {
         displayRecipes();
     }
 }
-    // } else {
-    //     alert('Please fill out all fields');
-    // }
+ 
 }
-// const recipeForm = document.querySelector('#recipeForm');
-// recipeForm.addEventListener('submit', addRecipe);
+
+const deleteRecipe = (index) => {
+    recipes.splice(index, 1);
+    saveRecipeToLocalStorage();
+    displayRecipes();
+}
+
+const editRecipe = (index) => {
+    const updateRecipeTitle = prompt("Enter the new recipe title", recipes[index].title);
+    const updateRecipeIngrediendients = prompt("Enter the new recipe ingredients", recipes[index].Ingredients);
+    const updateRecipeSteps = prompt("Enter the new recipe steps", recipes[index].Steps);
+
+    if(updateRecipeTitle && updateRecipeIngrediendients && updateRecipeSteps){
+        recipes[index].title = updateRecipeTitle;
+        recipes[index].Ingredients = updateRecipeIngrediendients;
+        recipes[index].Steps = updateRecipeSteps;
+
+        displayRecipes();
+        saveRecipeToLocalStorage();
+    }
+}
+
+
 
 document.getElementById('recipeForm').addEventListener('submit', addRecipe);
 
