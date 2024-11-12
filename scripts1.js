@@ -178,6 +178,22 @@ const cancelEdit = (index) => {
     document.getElementById(`saveBtn-${index}`).classList.add('hidden');
     document.getElementById(`cancelBtn-${index}`).classList.add('hidden');
 }
+saveRecipe = (index) =>{
+    const updatedTitle = document.getElementById(`titleInput-${index}`).value.trim();
+    const updatedIngredients = document.getElementById(`ingredientsInput-${index}`).value.trim();
+    const updatedSteps = document.getElementById(`stepsInput-${index}`).value.trim();
+
+    if(updatedTitle && updatedIngredients && updatedSteps){
+        recipes[index].title = updatedTitle;
+        recipes[index].Ingredients = updatedIngredients;
+        recipes[index].Steps = updatedSteps;
+        displayRecipes();
+        saveRecipeToLocalStorage();
+}
+else{
+    alert("Please fill all the fields");
+}
+}
 
 
 
