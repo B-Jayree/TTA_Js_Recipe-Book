@@ -18,7 +18,8 @@ let recipes = [
 
     }
 
-]
+];
+let oldRecipes =[];
 /**
  * This function displays the list of recipes on the webpage.
  */
@@ -29,18 +30,18 @@ const displayRecipes = () => {
     if(recipeList){ 
         recipes.forEach((recipe, index) => {
             const recipeCard = document.createElement('div');
-            recipeCard.classList.add('bg-white', 'p-4', 'rounded', 'shadow', 'mb-4');
+            recipeCard.classList.add('bg-gray-800','text-white', 'p-4', 'rounded', 'shadow', 'mb-4');
     
             recipeCard.innerHTML = `
          <h2 class="text-lg font-bold" id="titleDisplay-${index}">${recipe.title}</h2>
-         <input type="text" id="titleInput-${index}" class="hidden border p-2 w-full mb-2 rounded-lg" value="${recipe.title}">
+         <input type="text" id="titleInput-${index}" class="text-black hidden border p-2 w-full mb-2 rounded-lg" value="${recipe.title}">
 
-         <p class="text-sm text-gray-500" id="ingredientsDisplay-${index}"><strong>Ingredients: &emsp;</strong>${recipe.Ingredients}</p>
-         <textarea id="ingredientsInput-${index}" class="hidden border p-2 w-full mb-2 rounded-lg">${recipe.Ingredients}</textarea>
+         <p class="text-sm text-blue-500" id="ingredientsDisplay-${index}"><strong>Ingredients: &emsp;</strong>${recipe.Ingredients}</p>
+         <textarea id="ingredientsInput-${index}" class="text-black hidden border p-2 w-full mb-2 rounded-lg">${recipe.Ingredients}</textarea>
 
 
          <p class="text-sm" id="stepsDisplay-${index}"><strong>Steps:&emsp;</strong>${recipe.Steps}</p>
-         <textarea id="stepsInput-${index}" class="hidden border p-2 w-full mb-2 rounded-lg">${recipe.Steps}</textarea>
+         <textarea id="stepsInput-${index}" class="hidden text-black border p-2 w-full mb-2 rounded-lg">${recipe.Steps}</textarea>
 
 
          <button class="bg-blue-500 text-white px-2 py-1 rounded mt-2" id="editBtn-${index}"  onclick="editRecipe(${index})">Edit</button>
@@ -56,10 +57,17 @@ const displayRecipes = () => {
 
 const saveRecipeToLocalStorage = () => {
     localStorage.setItem("recipes", JSON.stringify(recipes));
+    localStorage.setItem("oldRecipes", JSON.stringify(oldRecipes))
 }
 
 const loadRecipesFromLocalStorage = () => {
     const storedRecipes = localStorage.getItem("recipes");
+    const storedOldRecipes = localStorage.getItem("oldRecipes");
+
+    if (storedOldRecipes){
+        oldRecipes = JSON.parse(storedOldRecipes);
+    }
+
     if(storedRecipes){
         recipes = JSON.parse(storedRecipes);
     }
@@ -127,7 +135,8 @@ const addRecipe = (event) => {
 }
 
 const deleteRecipe = (index) => {
-    recipes.splice(index, 1);
+    const deletedRecipe = recipes.splice(index, 1)[0];
+    oldRecipes.push(deletedRecipe)
     saveRecipeToLocalStorage();
     displayRecipes();
 }
