@@ -211,6 +211,6 @@ const recipeForm = document.getElementById('recipeForm');
 if(recipeForm){
 document.getElementById('recipeForm').addEventListener('submit', addRecipe);
 }
-
+// localStorage.clear();
 loadRecipesFromLocalStorage();
 displayRecipes();
