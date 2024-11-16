@@ -1,2 +1,2 @@
 # TTA_Js_Recipe-Book
-./index1.html
+https://github.com/B-Jayree/TTA_Js_Recipe-Book/blob/main/index1.html
